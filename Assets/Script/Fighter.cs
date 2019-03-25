@@ -21,6 +21,9 @@ public class Fighter : MonoBehaviour {
 	void Update () {
         Move();
 
+        // Jeśli tutaj wpierdolę jakiś inny tekst
+        // to co do jasnej cholery zobaczę w gicie?
+
         if (isJumping) {
             JumpUpdate();
         }
