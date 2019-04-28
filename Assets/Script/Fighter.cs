@@ -29,7 +29,9 @@ public class Fighter : MonoBehaviour {
         }
         AnimatorIsPlaying();
 
+        Debug.Log("JumpUpdate: " + rb.velocity);
     }
+
     private void Move() {
 
         if (Input.GetKey(KeyCode.LeftArrow)) {
@@ -38,7 +40,13 @@ public class Fighter : MonoBehaviour {
         if (Input.GetKey(KeyCode.RightArrow)) {
             WalkForth();
         }
-        if (Input.GetKey(KeyCode.UpArrow)) {
+
+        if (Input.GetKeyUp(KeyCode.RightArrow)  || Input.GetKeyUp(KeyCode.LeftArrow)) {
+            StopWalking();
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.UpArrow)) {
             // get key so it works only once
             if (!isJumping) {
                 Jump();
@@ -58,6 +66,7 @@ public class Fighter : MonoBehaviour {
     private void Jump() {
         rb.velocity = new Vector2(0, 15f); // standard jump
         isJumping = true;// from this moment everything is changed every frame by jump update
+        anim.SetBool("Jump", true);
     }
     private void JumpUpdate() {
         if (rb.velocity.y > 0) {
@@ -66,19 +75,31 @@ public class Fighter : MonoBehaviour {
         }else if (rb.velocity.y < 0) {
             var m1 = Vector2.up * Physics2D.gravity * (2f) * (Time.deltaTime);
             rb.velocity += m1;
-        } else if (rb.velocity.y == 0) {
+        } else if (rb.velocity.y < 1 && rb.velocity.y > -1) {
             isJumping = false;
+            anim.SetBool("Jump", false);
         }
     }
 
 
-    private void WalkForth() {
-        Vector3 pos = this.transform.position;
-        this.transform.position = new Vector2(pos.x + walkSpeed * Time.deltaTime, pos.y);
+    private void WalkForth() {        
+        Vector3 pos = transform.position;
+        transform.position = new Vector2(pos.x + walkSpeed * Time.deltaTime, pos.y);
+
+        if (!isJumping) {
+            anim.SetBool("GoForth", true);
+        }
     }
     private void WalkBack() {
-        Vector3 pos = this.transform.position;
-        this.transform.position = new Vector2(pos.x - walkSpeed * Time.deltaTime, pos.y);
+        Vector3 pos = transform.position;
+        transform.position = new Vector2(pos.x - walkSpeed * Time.deltaTime, pos.y);
+
+        if (!isJumping) {
+            anim.SetBool("GoForth", true);
+        }
+    }
+    private void StopWalking() {
+        anim.SetBool("GoForth", false);
     }
 
 
