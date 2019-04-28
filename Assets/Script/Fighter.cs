@@ -53,13 +53,20 @@ public class Fighter : MonoBehaviour {
             }
         }
         if (Input.GetKeyDown(KeyCode.W)) {
-            HeadHit();
+            //HeadHit();
         }
-        if (Input.GetKeyDown(KeyCode.S)) {
+        if (Input.GetKeyDown(KeyCode.D)) {
+            Die();
+        }
+        if (Input.GetKeyDown(KeyCode.Space)) {
             Kick();
         }
         if (Input.GetKeyDown(KeyCode.X)) {
-            KickLow();
+            //KickLow();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C)) {
+            Punch();
         }
     }
     
@@ -88,6 +95,8 @@ public class Fighter : MonoBehaviour {
 
         if (!isJumping) {
             anim.SetBool("GoForth", true);
+        } else {
+            anim.SetBool("GoForth", false);
         }
     }
     private void WalkBack() {
@@ -96,6 +105,8 @@ public class Fighter : MonoBehaviour {
 
         if (!isJumping) {
             anim.SetBool("GoForth", true);
+        } else {
+            anim.SetBool("GoForth", false);
         }
     }
     private void StopWalking() {
@@ -107,11 +118,20 @@ public class Fighter : MonoBehaviour {
     private void Kick() {
         anim.SetTrigger("KickHigh");
     }
-    private void KickLow() {
+
+    private void Punch() {
+        anim.SetTrigger("Punch");
+    }
+    /*private void KickLow() {
         anim.SetTrigger("KickLow");
     }
     private void HeadHit() {
         anim.SetTrigger("HeadHit");
+    }*/
+
+    void Die() {
+        Debug.Log("Try to die");
+        anim.SetTrigger("Die");
     }
 
     void AnimatorIsPlaying() {
